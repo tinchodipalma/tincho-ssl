@@ -28,7 +28,7 @@ http {
   server {
     listen              80 default_server;
     listen              [::]:80;
-    server_name         --; 
+    server_name         _;
     
     location / {
       return 301 https://$host$request_uri;
@@ -37,6 +37,7 @@ http {
 
   server {
     listen              443 ssl default_server;
+    server_name         _;
     
     # all ssl related config moved to ssl.conf
     include /config/nginx/ssl.conf;
