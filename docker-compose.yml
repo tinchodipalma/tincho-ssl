@@ -8,6 +8,8 @@ services:
   tincho-svc:
     image: nginx:alpine
     restart: on-failure
+    volumes:
+      - ./rootfs/tincho:/usr/share/nginx/html
     networks:
       - tincho
 
