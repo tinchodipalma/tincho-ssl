@@ -1,0 +1,51 @@
+worker_processes 1;
+pid /var/run/nginx.pid;
+
+events {
+  worker_connections 1024;
+}
+
+http {
+  client_max_body_size 10M;
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
+  keepalive_timeout 65;
+  types_hash_max_size 2048;
+  server_tokens off;
+
+  server_names_hash_bucket_size 32;
+
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+
+  access_log /var/log/nginx/access.log;
+  error_log /var/log/nginx/error.log;
+
+  # gzip on;
+  gzip_disable "msie6";
+
+  server {
+    listen              80 default_server;
+    listen              [::]:80;
+    server_name         --; 
+    
+    location / {
+      return 301 https://$host$request_uri;
+    }
+  }
+
+  server {
+    listen              443 ssl default_server;
+    
+    # all ssl related config moved to ssl.conf
+    include /config/nginx/ssl.conf;
+
+    include /config/nginx/proxy-confs/*.subdomain.conf;
+
+    location / {
+        include /config/nginx/proxy.conf;
+        proxy_pass http://tincho-svc:80;
+    }
+  }
+}
