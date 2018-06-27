@@ -13,6 +13,11 @@ services:
 
   letsencrypt:
     image: linuxserver/letsencrypt
+    container_name: letsencrypt
+    cap_add:
+      - NET_ADMIN
+    links:
+      - tincho-svc
     volumes:
       - ./rootfs/config:/config
       - letsencrypt_config:/config
