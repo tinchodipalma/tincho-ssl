@@ -1,3 +1,10 @@
+worker_processes 1;
+pid /var/run/nginx.pid;
+
+events {
+  worker_connections 1024;
+}
+
 http {
   client_max_body_size 10M;
   sendfile on;
