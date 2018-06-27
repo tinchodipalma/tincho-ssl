@@ -1,0 +1,43 @@
+version: '3'
+
+networks:
+  tincho:
+    driver: bridge
+
+services:
+  tincho-svc:
+    build: .
+    restart: on-failure
+    volumes:
+      - letsencrypt_certs:/etc/nginx/certs
+      - letsencrypt_www:/var/www/letsencrypt
+    networks:
+      - tincho
+    ports:
+      - "443:443"
+      - "80:80"
+
+  letsencrypt:
+    image: linuxserver/letsencrypt
+    volumes:
+      - letsencrypt_config:/config
+      - letsencrypt_certs:/config/etc/letsencrypt
+    environment:
+      # - PGID:<gid>
+      # - PUID:<uid> 
+      - URL:tincho.com.ar
+      - SUBDOMAINS:www,api,app
+      - VALIDATION:http
+      - TZ:America/New_York
+
+      - EMAIL
+    networks: 
+      - tincho
+    ports:
+      - "443:443"
+      - "80:80"
+
+volumes:
+  letsencrypt_certs: ~
+  letsencrypt_config: ~
+  letsencrypt_www: ~
