@@ -14,7 +14,7 @@ services:
   letsencrypt:
     image: linuxserver/letsencrypt
     volumes:
-      - ./rootfs:/
+      - ./rootfs/config:/config
       - letsencrypt_config:/config
       - letsencrypt_certs:/config/etc/letsencrypt
     environment:
