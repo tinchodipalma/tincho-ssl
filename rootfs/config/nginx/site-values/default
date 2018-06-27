@@ -38,7 +38,7 @@ http {
   server {
     listen              443 ssl;
     server_name         --;
-    root /config/www;
+    #root /config/www;
     
     # all ssl related config moved to ssl.conf
     include /config/nginx/ssl.conf;
