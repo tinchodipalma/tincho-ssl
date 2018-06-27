@@ -28,6 +28,7 @@ services:
       - URL
       - SUBDOMAINS
       - VALIDATION
+      - STAGING
       - TZ
       - EMAIL
     networks: 
