@@ -22,8 +22,6 @@ services:
       - tincho-svc
     volumes:
       - ./rootfs/config:/config
-      - letsencrypt_config:/config
-      - letsencrypt_certs:/config/etc/letsencrypt
     environment:
       # - PGID:<gid>
       # - PUID:<uid> 
@@ -37,7 +35,3 @@ services:
     ports:
       - "443:443"
       - "80:80"
-
-volumes:
-  letsencrypt_certs: ~
-  letsencrypt_config: ~
