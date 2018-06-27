@@ -25,33 +25,29 @@ http {
 #  gzip on;
   gzip_disable "msie6";
 
-  server {
-    listen              80 default_server;
-    listen              [::]:80;
-    server_name         --; 
-    
-    location /.well-known/acme-challenge/ {
-      proxy_pass http://letsencrypt:80;
-    }
-  
-    location / {
-      return 301 https://$host$request_uri;
-    }
-  }
+  # server {
+  #   listen              80 default_server;
+  #   listen              [::]:80;
+  #   server_name         --; 
+  #   
+  #   location / {
+  #     return 301 https://$host$request_uri;
+  #   }
+  # }
 
   server {
     listen              443 ssl;
     server_name         --;
-    ssl_certificate     /config/etc/letsencrypt/live/tincho.com.ar/fullchain.pem;
-    ssl_certificate_key /config/etc/letsencrypt/live/tincho.com.ar/privkey.pem; 
+    root /config/www;
+    
+    # all ssl related config moved to ssl.conf
+    include /config/nginx/ssl.conf;
 
+    include /config/nginx/proxy-confs/*.subdomain.conf;
+  
     location / {
+      include /config/nginx/proxy.conf;
       proxy_pass http://tincho-svc:80;
-    }
-
-    error_page   500 502 503 504  /50x.html;
-    location = /50x.html {
-        root   /usr/share/nginx/html;
     }
   }
 }

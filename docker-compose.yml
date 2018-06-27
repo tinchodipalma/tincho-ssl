@@ -6,24 +6,17 @@ networks:
 
 services:
   tincho-svc:
-    build: .
+    image: nginx:alpine
     restart: on-failure
-    volumes:
-      - letsencrypt_certs:/etc/nginx/certs
-      - letsencrypt_www:/var/www/letsencrypt
-      - nginx_config:/config/nginx
     networks:
       - tincho
-    # ports:
-    #   - "443:443"
-    #   - "80:80"
 
   letsencrypt:
     image: linuxserver/letsencrypt
     volumes:
+      - ./rootfs:/
       - letsencrypt_config:/config
       - letsencrypt_certs:/config/etc/letsencrypt
-      - nginx_config:/config/nginx/site-confs
     environment:
       # - PGID:<gid>
       # - PUID:<uid> 
@@ -39,7 +32,5 @@ services:
       - "80:80"
 
 volumes:
-  nginx_config: ~
   letsencrypt_certs: ~
   letsencrypt_config: ~
-  letsencrypt_www: ~
